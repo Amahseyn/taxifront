@@ -1,0 +1,29 @@
+name: Frontend Deploy
+
+on:
+  workflow_run:
+    workflows: ["Frontend CI"]
+    types: [completed]
+    branches:
+      - main
+      - master
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy frontend with SSH and PM2
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ vars.SSH_HOST }}
+          username: ${{ vars.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            set -e
+            cd /var/www/taxifront || git clone https://github.com/Amahseyn/taxifront.git /var/www/taxifront
+            cd /var/www/taxifront
+            git pull origin main
+            npm ci
+            npm run build
+            npx pm2 start ecosystem.config.js --env production --only taxifront || npx pm2 reload ecosystem.config.js --env production --only taxifront
