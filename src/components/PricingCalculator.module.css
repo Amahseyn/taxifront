@@ -1,0 +1,70 @@
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-primary);
+  margin-top: 16px;
+}
+
+.note {
+  font-size: 15px;
+  color: var(--text-secondary);
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+.note em {
+  font-style: normal;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 14px;
+}
+
+.th {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  font-weight: 700;
+  padding: 16px;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.td {
+  padding: 16px;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-secondary);
+}
+
+.tr:nth-child(even) {
+  background-color: var(--bg-secondary);
+}
+
+.tr:hover {
+  background-color: #f1f8fc;
+}
+
+.airportName {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.code {
+  font-size: 11px;
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+  font-family: monospace;
+}
+
+.price {
+  font-weight: 700;
+  color: var(--accent-blue);
+}

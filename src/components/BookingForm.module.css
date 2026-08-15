@@ -1,0 +1,311 @@
+.card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.title {
+  font-family: var(--font-body);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.radioGroup {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 576px) {
+  .radioGroup {
+    grid-template-columns: 1fr;
+  }
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: var(--transition-smooth);
+}
+
+.radioInput {
+  accent-color: var(--accent-blue);
+}
+
+.radioLabelSelected {
+  border-color: var(--accent-blue);
+  background: rgba(6, 106, 171, 0.05);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.legend {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  padding: 0;
+}
+
+.sublabel {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: -4px;
+}
+
+.required {
+  color: #a60f0a;
+  font-weight: 700;
+}
+
+.errorMsg {
+  font-size: 12px;
+  color: #a60f0a;
+  font-weight: 600;
+}
+
+.input, .select, .textarea {
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  color: var(--text-primary);
+  border-radius: 6px;
+  padding: 12px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  transition: var(--transition-smooth);
+  width: 100%;
+}
+
+.input:focus, .select:focus, .textarea:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 1px var(--accent-blue);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.estimateCard {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--accent-blue);
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.estimatePrice {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--accent-blue);
+}
+
+.successCard {
+  background: #ffffff;
+  border: 2px solid var(--accent-green);
+  border-radius: 12px;
+  padding: 40px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.successIcon {
+  color: var(--accent-green);
+  margin: 0 auto;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.pickMapRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.pickMapBtn {
+  background: transparent;
+  border: none;
+  color: var(--accent-blue);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 0;
+  text-decoration: underline;
+}
+
+.pickMapBtn:hover {
+  color: #054b7a;
+}
+
+.routeCard {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.routeLeg {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.routeDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.routeDotPickup {
+  background: var(--accent-blue);
+}
+
+.routeDotDest {
+  background: #a60f0a;
+}
+
+.routeLine {
+  width: 2px;
+  height: 16px;
+  background: var(--border-color);
+  margin-left: 5px;
+}
+
+.routeAddr {
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.routeStats {
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-color);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.summaryCard {
+  background: var(--bg-tertiary);
+  padding: 16px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.summaryTotal {
+  border-top: 1px solid var(--border-color);
+  padding-top: 8px;
+  display: flex;
+  justify-content: space-between;
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.summaryTotalValue {
+  color: var(--accent-blue);
+}
+
+.quoteRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid var(--border-color);
+  background: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.quoteRowSelected {
+  border: 2px solid var(--accent-blue);
+  background: rgba(6, 106, 171, 0.03);
+}
+
+.quoteMeta {
+  text-align: right;
+}
+
+.quotePrice {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--accent-blue);
+}
+
+.quoteSub {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}

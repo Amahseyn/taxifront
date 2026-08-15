@@ -1,0 +1,17 @@
+{
+  "name": "Colchester Airport Taxi",
+  "short_name": "Colchester Taxi",
+  "description": "24/7 Airport taxi service based in Colchester",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,223 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10000;
+  background: #ffffff;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 24px;
+  height: 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  margin-left: -50px;
+  margin-right: auto;
+}
+
+.logoImg {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+}
+
+.navLink {
+  color: var(--text-primary);
+  font-size: 15px;
+  font-weight: 600;
+  transition: var(--transition-smooth);
+}
+
+.navLink:hover {
+  color: var(--accent-blue);
+}
+
+.menuItemHasIcon {
+  display: flex;
+}
+
+.bookBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--btn-bg);
+  color: #ffffff;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  transition: var(--transition-smooth);
+}
+
+.bookBtn:hover {
+  background-color: var(--btn-bg-hover);
+}
+
+.bookBtn .fa {
+  font-size: 15px;
+}
+
+/* Social group */
+.socialGroup {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.socialGroup a {
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  transition: var(--transition-smooth);
+}
+
+.socialGroup a:hover {
+  color: var(--accent-blue);
+}
+
+.socialGroup .fa {
+  font-size: 16px;
+}
+
+/* Mobile hamburger */
+.mobileMenuBtn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 8px;
+}
+
+.linesButton {
+  display: inline-block;
+  width: 24px;
+  height: 18px;
+  position: relative;
+}
+
+.lines {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: currentColor;
+  position: relative;
+  transition: var(--transition-smooth);
+}
+
+.lines::before,
+.lines::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 24px;
+  height: 2px;
+  background: currentColor;
+}
+
+.lines::before {
+  top: -7px;
+}
+
+.lines::after {
+  top: 7px;
+}
+
+@media (max-width: 968px) {
+  .nav {
+    display: none;
+  }
+
+  .mobileMenuBtn {
+    display: block;
+  }
+}
+
+.mobileMenu {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border-bottom: 1px solid var(--border-color);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 99;
+  animation: slideDown 0.3s ease-out forwards;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.mobileNavLink {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.mobileBookBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: var(--btn-bg);
+  color: #ffffff;
+  font-weight: 600;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.mobileSocials {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.mobileSocials a {
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+}
+
+.mobileSocials a:hover {
+  color: var(--accent-blue);
+}
+
+.mobileSocials .fa {
+  font-size: 18px;
+}

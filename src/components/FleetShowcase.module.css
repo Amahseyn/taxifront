@@ -1,0 +1,231 @@
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+@media (max-width: 991px) {
+  .grid {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
+
+.card {
+  background: transparent;
+  border-radius: 12px;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.5; /* 1536x1024 is 1.5 ratio */
+  background-color: transparent;
+  border-radius: 12px;
+  overflow: visible; /* Need overflow visible for tooltips */
+}
+
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Hotspots styling */
+.hotspotWrap {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  cursor: pointer;
+}
+
+.hotspot {
+  width: 30px;
+  height: 30px;
+  background-color: #ffb200;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 16px;
+  position: relative;
+  box-shadow: 0 2px 10px rgba(255, 178, 0, 0.4);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.hotspotWrap:hover .hotspot,
+.hotspotWrap.active .hotspot {
+  background-color: #227bf7;
+  box-shadow: 0 2px 10px rgba(34, 123, 247, 0.4);
+  transform: scale(1.1);
+}
+
+.plusIcon {
+  line-height: 1;
+  user-select: none;
+}
+
+/* Pulse animation */
+.hotspot::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 50%;
+  border: 2px solid #ffb200;
+  opacity: 0;
+  animation: pulse 2s infinite;
+}
+
+.hotspotWrap:hover .hotspot::after,
+.hotspotWrap.active .hotspot::after {
+  border-color: #227bf7;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Tooltip (nttip) */
+.tooltip {
+  position: absolute;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12), 0 5px 15px rgba(0, 0, 0, 0.08);
+  width: 250px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), 
+              transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), 
+              visibility 0.3s;
+  z-index: 99;
+  pointer-events: none;
+}
+
+.hotspotWrap:hover .tooltip,
+.hotspotWrap.active .tooltip {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.tooltipInner {
+  padding: 16px 20px;
+}
+
+.tooltipTitle {
+  margin: 0 0 6px 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #227bf7;
+  font-family: inherit;
+}
+
+.tooltipText {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #4a5568;
+}
+
+.tooltipText img {
+  display: inline-block;
+  vertical-align: middle;
+  height: 16px;
+  margin-left: 4px;
+}
+
+/* Tooltip Positions */
+.top {
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translate(-50%, 10px);
+}
+
+.hotspotWrap:hover .top,
+.hotspotWrap.active .top {
+  transform: translate(-50%, 0);
+}
+
+.right {
+  left: calc(100% + 12px);
+  top: 50%;
+  transform: translate(-10px, -50%);
+}
+
+.hotspotWrap:hover .right,
+.hotspotWrap.active .right {
+  transform: translate(0, -50%);
+}
+
+/* Specific alignments for Minibus/end columns to prevent clipping */
+@media (min-width: 992px) {
+  .forceLeft {
+    left: auto;
+    right: calc(100% + 12px);
+    transform: translate(10px, -50%);
+  }
+  
+  .hotspotWrap:hover .forceLeft,
+  .hotspotWrap.active .forceLeft {
+    transform: translate(0, -50%);
+  }
+}
+
+/* Mobile responsive tooltips */
+@media (max-width: 600px) {
+  .tooltip {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    width: auto;
+    transform: translateY(20px) !important;
+    top: auto !important;
+  }
+  
+  .hotspotWrap:hover .tooltip,
+  .hotspotWrap.active .tooltip {
+    transform: translateY(0) !important;
+  }
+}
+
+.infoWrapper {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333333;
+  margin: 0;
+  line-height: 1.4;
+  font-family: inherit;
+}
