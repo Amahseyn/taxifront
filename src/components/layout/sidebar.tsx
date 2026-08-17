@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 
 interface SidebarProps {
@@ -12,24 +12,42 @@ interface SidebarProps {
 
 export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const pageParam = searchParams.get('page');
   const { user, logout } = useAuth();
 
   const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>({
     bookings: pathname.startsWith('/admin/bookings') || pathname === '/admin/calendar',
     users: pathname.startsWith('/admin/customers') || pathname.startsWith('/admin/drivers'),
-    settings: pathname.startsWith('/admin/settings') || pathname.startsWith('/admin/locations') || pathname.startsWith('/admin/zones') || pathname.startsWith('/admin/pricing') || pathname.startsWith('/admin/surcharges') || pathname.startsWith('/admin/payments') || pathname.startsWith('/admin/notifications'),
+    settings:
+      pathname.startsWith('/admin/settings') ||
+      pathname.startsWith('/admin/locations') ||
+      pathname.startsWith('/admin/zones') ||
+      pathname.startsWith('/admin/pricing') ||
+      pathname.startsWith('/admin/surcharges') ||
+      pathname.startsWith('/admin/payments') ||
+      pathname.startsWith('/admin/notifications') ||
+      pathname.startsWith('/admin/vehicles'),
     kb: pathname.startsWith('/admin/kb') || pathname.startsWith('/admin/user-guide'),
   });
 
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
 
-  // Auto-expand active group based on current pathname
   useEffect(() => {
     setExpandedMenus((prev) => ({
       ...prev,
       bookings: prev.bookings || pathname.startsWith('/admin/bookings') || pathname === '/admin/calendar',
       users: prev.users || pathname.startsWith('/admin/customers') || pathname.startsWith('/admin/drivers'),
-      settings: prev.settings || pathname.startsWith('/admin/settings') || pathname.startsWith('/admin/locations') || pathname.startsWith('/admin/zones') || pathname.startsWith('/admin/pricing') || pathname.startsWith('/admin/surcharges') || pathname.startsWith('/admin/payments') || pathname.startsWith('/admin/notifications'),
+      settings:
+        prev.settings ||
+        pathname.startsWith('/admin/settings') ||
+        pathname.startsWith('/admin/locations') ||
+        pathname.startsWith('/admin/zones') ||
+        pathname.startsWith('/admin/pricing') ||
+        pathname.startsWith('/admin/surcharges') ||
+        pathname.startsWith('/admin/payments') ||
+        pathname.startsWith('/admin/notifications') ||
+        pathname.startsWith('/admin/vehicles'),
     }));
   }, [pathname]);
 
@@ -37,13 +55,23 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
     setExpandedMenus((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
-  const displayName = user?.name || user?.email || 'Admin User';
+  const displayName = user?.firstName
+    ? `${user.firstName} ${user.lastName || ''}`.trim()
+    : user?.email || 'Admin User';
   const avatarLetter = (displayName.charAt(0) || 'A').toUpperCase();
-  const tenantName = user?.tenantName || 'Main Company';
+  const tenantName = user?.activeTenantId ? 'RouteOS Fleet' : 'Main Fleet';
 
-  const isActive = (href: string, exact = false) => {
-    if (exact) return pathname === href;
-    return pathname === href || pathname.startsWith(href + '/');
+  const isLinkActive = (path: string, page?: string) => {
+    if (page) {
+      return pathname === path && pageParam === page;
+    }
+    if (path === '/admin/bookings' && !page) {
+      return pathname === '/admin/bookings' && !pageParam;
+    }
+    if (path === '/admin') {
+      return pathname === '/admin';
+    }
+    return pathname.startsWith(path);
   };
 
   return (
@@ -78,7 +106,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
         <ul className="routeos-nav-links">
           {/* Main Category */}
           <li className="routeos-nav-category">Main</li>
-          <li className={`routeos-nav-item ${isActive('/admin', true) ? 'active' : ''}`}>
+          <li className={`routeos-nav-item ${isLinkActive('/admin') ? 'active' : ''}`}>
             <div className="routeos-nav-link-wrapper">
               <Link href="/admin" className="routeos-nav-link-content">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -112,37 +140,42 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
 
             {expandedMenus.bookings && (
               <ul className="routeos-submenu">
-                <li className={`routeos-nav-item ${isActive('/admin/bookings?page=next24') ? 'active' : ''}`}>
+                <li className={`routeos-nav-item ${isLinkActive('/admin/bookings', 'next24') ? 'active' : ''}`}>
                   <div className="routeos-nav-link-wrapper">
                     <Link href="/admin/bookings?page=next24" className="routeos-nav-link-content">Next 24 Hours</Link>
                   </div>
                 </li>
-                <li className={`routeos-nav-item ${isActive('/admin/bookings?page=latest') ? 'active' : ''}`}>
+                <li className={`routeos-nav-item ${isLinkActive('/admin/bookings', 'latest') ? 'active' : ''}`}>
                   <div className="routeos-nav-link-wrapper">
                     <Link href="/admin/bookings?page=latest" className="routeos-nav-link-content">Latest</Link>
                   </div>
                 </li>
-                <li className={`routeos-nav-item ${isActive('/admin/bookings?page=completed') ? 'active' : ''}`}>
+                <li className={`routeos-nav-item ${isLinkActive('/admin/bookings', 'completed') ? 'active' : ''}`}>
                   <div className="routeos-nav-link-wrapper">
                     <Link href="/admin/bookings?page=completed" className="routeos-nav-link-content">Completed</Link>
                   </div>
                 </li>
-                <li className={`routeos-nav-item ${isActive('/admin/bookings?page=cancelled') ? 'active' : ''}`}>
+                <li className={`routeos-nav-item ${isLinkActive('/admin/bookings', 'cancelled') ? 'active' : ''}`}>
                   <div className="routeos-nav-link-wrapper">
                     <Link href="/admin/bookings?page=cancelled" className="routeos-nav-link-content">Cancelled</Link>
                   </div>
                 </li>
-                <li className={`routeos-nav-item ${isActive('/admin/bookings', true) ? 'active' : ''}`}>
+                <li className={`routeos-nav-item ${isLinkActive('/admin/bookings') ? 'active' : ''}`}>
                   <div className="routeos-nav-link-wrapper">
                     <Link href="/admin/bookings" className="routeos-nav-link-content">All</Link>
                   </div>
                 </li>
-                <li className={`routeos-nav-item ${isActive('/admin/bookings/create') ? 'active' : ''}`}>
+                <li className={`routeos-nav-item ${isLinkActive('/admin/bookings', 'trash') ? 'active' : ''}`}>
+                  <div className="routeos-nav-link-wrapper">
+                    <Link href="/admin/bookings?page=trash" className="routeos-nav-link-content">Trash</Link>
+                  </div>
+                </li>
+                <li className={`routeos-nav-item ${isLinkActive('/admin/bookings/create') ? 'active' : ''}`}>
                   <div className="routeos-nav-link-wrapper">
                     <Link href="/admin/bookings/create" className="routeos-nav-link-content">Add New</Link>
                   </div>
                 </li>
-                <li className={`routeos-nav-item ${isActive('/admin/calendar') ? 'active' : ''}`}>
+                <li className={`routeos-nav-item ${isLinkActive('/admin/calendar') ? 'active' : ''}`}>
                   <div className="routeos-nav-link-wrapper">
                     <Link href="/admin/calendar" className="routeos-nav-link-content">Calendar</Link>
                   </div>
@@ -168,12 +201,12 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
 
             {expandedMenus.users && (
               <ul className="routeos-submenu">
-                <li className={`routeos-nav-item ${isActive('/admin/customers') ? 'active' : ''}`}>
+                <li className={`routeos-nav-item ${isLinkActive('/admin/customers') ? 'active' : ''}`}>
                   <div className="routeos-nav-link-wrapper">
                     <Link href="/admin/customers" className="routeos-nav-link-content">Customers</Link>
                   </div>
                 </li>
-                <li className={`routeos-nav-item ${isActive('/admin/drivers') ? 'active' : ''}`}>
+                <li className={`routeos-nav-item ${isLinkActive('/admin/drivers') ? 'active' : ''}`}>
                   <div className="routeos-nav-link-wrapper">
                     <Link href="/admin/drivers" className="routeos-nav-link-content">Drivers</Link>
                   </div>
@@ -183,7 +216,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           </li>
 
           {/* Settings Accordion */}
-          <li className={`routeos-nav-item ${expandedMenus.settings ? 'expanded' : ''} ${pathname.startsWith('/admin/settings') || pathname.startsWith('/admin/locations') || pathname.startsWith('/admin/zones') || pathname.startsWith('/admin/pricing') || pathname.startsWith('/admin/surcharges') || pathname.startsWith('/admin/payments') || pathname.startsWith('/admin/notifications') ? 'active' : ''}`}>
+          <li className={`routeos-nav-item ${expandedMenus.settings ? 'expanded' : ''} ${expandedMenus.settings ? 'active' : ''}`}>
             <div className="routeos-nav-link-wrapper" onClick={() => toggleMenu('settings')}>
               <div className="routeos-nav-link-content cursor-pointer">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -199,37 +232,42 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
 
             {expandedMenus.settings && (
               <ul className="routeos-submenu">
-                <li className={`routeos-nav-item ${isActive('/admin/locations') ? 'active' : ''}`}>
+                <li className={`routeos-nav-item ${isLinkActive('/admin/locations') ? 'active' : ''}`}>
                   <div className="routeos-nav-link-wrapper">
                     <Link href="/admin/locations" className="routeos-nav-link-content">Locations</Link>
                   </div>
                 </li>
-                <li className={`routeos-nav-item ${isActive('/admin/zones') ? 'active' : ''}`}>
+                <li className={`routeos-nav-item ${isLinkActive('/admin/zones') ? 'active' : ''}`}>
                   <div className="routeos-nav-link-wrapper">
                     <Link href="/admin/zones" className="routeos-nav-link-content">Zones</Link>
                   </div>
                 </li>
-                <li className={`routeos-nav-item ${isActive('/admin/pricing') ? 'active' : ''}`}>
+                <li className={`routeos-nav-item ${isLinkActive('/admin/pricing') ? 'active' : ''}`}>
                   <div className="routeos-nav-link-wrapper">
-                    <Link href="/admin/pricing" className="routeos-nav-link-content">Pricing</Link>
+                    <Link href="/admin/pricing" className="routeos-nav-link-content">Pricing & Rates</Link>
                   </div>
                 </li>
-                <li className={`routeos-nav-item ${isActive('/admin/surcharges') ? 'active' : ''}`}>
+                <li className={`routeos-nav-item ${isLinkActive('/admin/vehicles') ? 'active' : ''}`}>
+                  <div className="routeos-nav-link-wrapper">
+                    <Link href="/admin/vehicles" className="routeos-nav-link-content">Vehicles</Link>
+                  </div>
+                </li>
+                <li className={`routeos-nav-item ${isLinkActive('/admin/surcharges') ? 'active' : ''}`}>
                   <div className="routeos-nav-link-wrapper">
                     <Link href="/admin/surcharges" className="routeos-nav-link-content">Surcharges</Link>
                   </div>
                 </li>
-                <li className={`routeos-nav-item ${isActive('/admin/payments') ? 'active' : ''}`}>
+                <li className={`routeos-nav-item ${isLinkActive('/admin/payments') ? 'active' : ''}`}>
                   <div className="routeos-nav-link-wrapper">
                     <Link href="/admin/payments" className="routeos-nav-link-content">Payment Settings</Link>
                   </div>
                 </li>
-                <li className={`routeos-nav-item ${isActive('/admin/notifications') ? 'active' : ''}`}>
+                <li className={`routeos-nav-item ${isLinkActive('/admin/notifications') ? 'active' : ''}`}>
                   <div className="routeos-nav-link-wrapper">
                     <Link href="/admin/notifications" className="routeos-nav-link-content">Notifications</Link>
                   </div>
                 </li>
-                <li className={`routeos-nav-item ${isActive('/admin/settings') ? 'active' : ''}`}>
+                <li className={`routeos-nav-item ${isLinkActive('/admin/settings') ? 'active' : ''}`}>
                   <div className="routeos-nav-link-wrapper">
                     <Link href="/admin/settings" className="routeos-nav-link-content">General Settings</Link>
                   </div>
@@ -258,7 +296,14 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
               <ul className="routeos-submenu">
                 <li className="routeos-nav-item">
                   <div className="routeos-nav-link-wrapper">
-                    <a href="#" onClick={(e) => { e.preventDefault(); alert("User Guide opens documentation"); }} className="routeos-nav-link-content">
+                    <a
+                      href="#user-guide"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        alert('RouteOS User Guide & System Documentation');
+                      }}
+                      className="routeos-nav-link-content"
+                    >
                       User Guide
                     </a>
                   </div>
@@ -269,7 +314,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
         </ul>
 
         {/* Sidebar Footer / Account Menu */}
-        <div className="routeos-sidebar-footer">
+        <div className="routeos-sidebar-footer relative">
           {isAccountMenuOpen && (
             <div className="absolute bottom-full left-3 right-3 mb-2 bg-white border border-slate-200 rounded-xl shadow-lg p-2 z-50 animate-in fade-in slide-in-from-bottom-2">
               <Link
@@ -279,7 +324,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
               >
                 <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <circle cx="12" cy="12" r="3" />
-                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0-.33-1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
                 </svg>
                 Settings
               </Link>
@@ -288,7 +333,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                   setIsAccountMenuOpen(false);
                   logout();
                 }}
-                className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors text-left font-medium"
+                className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors text-left font-medium border-0 bg-transparent cursor-pointer"
               >
                 <svg className="w-4 h-4 text-red-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
@@ -303,15 +348,15 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           <button
             type="button"
             onClick={() => setIsAccountMenuOpen(!isAccountMenuOpen)}
-            className="w-full flex items-center justify-between p-2 rounded-xl hover:bg-slate-100 transition-colors text-left"
+            className="w-full flex items-center justify-between p-2 rounded-xl hover:bg-slate-100 transition-colors text-left border-0 bg-transparent cursor-pointer"
           >
             <div className="flex items-center gap-3 min-w-0">
               <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center font-semibold text-white text-sm shrink-0">
                 {avatarLetter}
               </div>
               <div className="min-w-0">
-                <h4 className="text-sm font-semibold text-slate-900 truncate leading-tight">{displayName}</h4>
-                <p className="text-xs text-slate-500 truncate leading-tight mt-0.5">{tenantName}</p>
+                <h4 className="text-sm font-semibold text-slate-900 truncate leading-tight m-0">{displayName}</h4>
+                <p className="text-xs text-slate-500 truncate leading-tight mt-0.5 m-0">{tenantName}</p>
               </div>
             </div>
             <svg
