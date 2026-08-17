@@ -3,6 +3,25 @@
 @tailwind utilities;
 
 :root {
+  --sidebar-width: 280px;
+  --header-height: 60px;
+
+  /* Light Theme Colors */
+  --bg-body: #ffffff;
+  --bg-sidebar: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-hover: #f1f5f9;
+
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+
+  --accent-color: #2563eb;
+  --accent-hover: #1d4ed8;
+
+  --border-color: #e2e8f0;
+
+  --transition-speed: 0.3s;
+
   --bg-primary: #ffffff;
   --bg-secondary: #fbfbfb;
   --bg-tertiary: #f5f5f5;
@@ -12,8 +31,6 @@
   --accent-gold: #fad416;
   --text-primary: #262626;
   --text-secondary: #444444;
-  --text-muted: #7f7f7f;
-  --border-color: #dddddd;
   --btn-bg: #000000db;
   --btn-bg-hover: #000000;
   --transition-smooth: all 0.25s ease-in-out;
@@ -90,7 +107,7 @@
 
 @layer base {
   body {
-    @apply antialiased selection:bg-cyan-500 selection:text-white;
+    @apply antialiased selection:bg-blue-500 selection:text-white;
   }
 }
 
@@ -105,4 +122,114 @@
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
+
+/* RouteOS Admin Panel CSS */
+.routeos-sidebar {
+  width: var(--sidebar-width);
+  background-color: var(--bg-sidebar);
+  border-right: 1px solid var(--border-color);
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  transition: transform var(--transition-speed) ease;
+  overflow: hidden;
+}
+
+.routeos-sidebar-header {
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+  background-color: var(--bg-sidebar);
+}
+
+.routeos-nav-links {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px 12px;
+  list-style: none;
+  scroll-behavior: smooth;
+}
+
+.routeos-nav-category {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  padding-left: 12px;
+  margin-top: 20px;
+  font-weight: 600;
+}
+
+.routeos-nav-item {
+  margin-bottom: 2px;
+}
+
+.routeos-nav-link-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: 8px;
+  transition: background 0.2s;
+  cursor: pointer;
+}
+
+.routeos-nav-link-wrapper:hover {
+  background-color: var(--bg-hover);
+}
+
+.routeos-nav-link-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-main);
+  text-decoration: none;
+  flex: 1;
+  font-size: 0.92rem;
+}
+
+.routeos-nav-item.active > .routeos-nav-link-wrapper {
+  background-color: #eff6ff;
+}
+
+.routeos-nav-item.active > .routeos-nav-link-wrapper .routeos-nav-link-content {
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+.routeos-submenu {
+  list-style: none;
+  padding-left: 28px;
+  overflow: hidden;
+}
+
+.routeos-submenu-arrow {
+  color: var(--text-muted);
+  transition: transform 0.3s ease;
+  width: 16px;
+  height: 16px;
+}
+
+.routeos-nav-item.expanded > .routeos-nav-link-wrapper .routeos-submenu-arrow {
+  transform: rotate(180deg);
+}
+
+.routeos-sidebar-footer {
+  padding: 16px;
+  border-top: 1px solid var(--border-color);
+  flex-shrink: 0;
+  background-color: var(--bg-sidebar);
+  position: relative;
+}
+
 
