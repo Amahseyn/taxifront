@@ -34,6 +34,7 @@ jobs:
             cd /var/www/taxifront
             git fetch origin main
             git reset --hard origin/main
+            rm -rf node_modules package-lock.json
             npm install
             NEXT_DISABLE_ESLINT=1 npm run build
             npx pm2 reload ecosystem.config.js --env production --only taxifront || npx pm2 start ecosystem.config.js --env production --only taxifront
