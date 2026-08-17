@@ -11,8 +11,9 @@ on:
       - master
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -20,13 +21,17 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
-          cache: npm
+          node-version: '18'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Build app
+      - name: Lint code
+        run: npm run lint
+
+      - name: Build Next.js application
         env:
           NEXT_DISABLE_ESLINT: '1'
         run: npm run build
+

@@ -1,10 +1,12 @@
+const path = require('path');
+
 module.exports = {
   apps: [
     {
       name: 'taxifront',
       script: 'npm',
       args: 'run start',
-      cwd: '/var/www/taxifront',
+      cwd: path.resolve(__dirname),
       env: {
         NODE_ENV: 'development',
         PORT: 3000
@@ -16,3 +18,4 @@ module.exports = {
     }
   ]
 };
+
