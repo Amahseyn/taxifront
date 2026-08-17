@@ -32,7 +32,7 @@ export default function MapDestination({ onSelect }) {
   useEffect(() => {
     let mounted = true;
     if (window.L) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time sync after mount
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       if (!leafletLoaded) setLeafletLoaded(true);
       return;
     }
